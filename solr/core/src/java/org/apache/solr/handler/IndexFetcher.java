@@ -1516,7 +1516,9 @@ public class IndexFetcher {
     for (Path path : makeTmpConfDirFileList(tmpconfDir)) {
       Path oldPath = confPath.resolve(path.subpath(numTempPathElements, path.getNameCount()));
       try {
-        Files.createDirectories(oldPath.getParent());
+        if (!Files.isDirectory(oldPath.getParent())) {
+          Files.createDirectories(oldPath.getParent());
+        }
       } catch (IOException e) {
         throw new SolrException(
             ErrorCode.SERVER_ERROR, "Unable to mkdirs: " + oldPath.getParent(), e);
